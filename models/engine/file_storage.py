@@ -13,7 +13,7 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            return {key: value for key, value in FileStorage.__objects.items() if key.split('.')[0] == cls}
+            return {key: value for key, value in FileStorage.__objects.items() if key.split('.')[0] == cls.__name__}
         
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -32,7 +32,7 @@ class FileStorage:
         """Deletes object from __objects if intside, if obj === None, do nothing """
         if obj is not None:
             try:
-                del(self.__objects[obj.__name__ + '.' + obj.id])
+                del(self.__objects[type(obj).__name__ + '.' + obj.id])
                 self.save()
             except KeyEror:
                 print("** no instance found **")

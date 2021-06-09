@@ -196,12 +196,8 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
 
-        try:
-            del(storage.all()[key])
-            storage.save()
-        except KeyError:
-            print("** no instance found **")
-
+        storage.delete(storage.all()[key])
+        
     def help_destroy(self):
         """ Help information for the destroy command """
         print("Destroys an individual instance of a class")

@@ -17,7 +17,6 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        
         # Get current HBNB_ENV for default dev/test connection params
         hbnb_env = 'dev'
         # 'test' if os.getenv('HBNB_ENV') == 'test' else 'dev'
@@ -71,7 +70,7 @@ class DBStorage:
     def reload(self):
         # print(Base.metadata.tables)
         Base.metadata.create_all(bind=self.__engine)
-        session_factory = sessionmaker(bind=self.__engine)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
         self.save()

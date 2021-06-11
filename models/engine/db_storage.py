@@ -19,7 +19,8 @@ class DBStorage:
     def __init__(self):
         
         # Get current HBNB_ENV for default dev/test connection params
-        hbnb_env = 'test' if os.getenv('HBNB_ENV') == 'test' else 'dev'
+        hbnb_env = 'dev'
+        # 'test' if os.getenv('HBNB_ENV') == 'test' else 'dev'
         # Create a new engine to connect to mysql
         # Default: 'mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost/hbnb_dev_db'
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format( 
@@ -34,7 +35,7 @@ class DBStorage:
             self.__engine.echo = True
         # Drop all tables if HBNB_ENV==test
         # Tables recreated when storate.reload() called in models/__init__
-        if hbnb_env == 'test':
+        if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
     
@@ -73,3 +74,4 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine)
         Session = scoped_session(session_factory)
         self.__session = Session()
+        self.save()

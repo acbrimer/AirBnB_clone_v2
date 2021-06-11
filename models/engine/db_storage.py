@@ -7,8 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from models.base_model import Base
 from models.city import City
 from models.state import State
-from sqlalchemy.dialects import mysql
-from sqlalchemy import exc as sa_exc
+from models.user import User
 
 class DBStorage:
     __engine = None
@@ -37,7 +36,7 @@ class DBStorage:
     
     def all(self, cls=None):
         """ Selects rows from mysql database """
-        classes = [cls] if cls is not None else [City, State]
+        classes = [cls] if cls is not None else [City, State, User]
         result_dict = {}
         for c in classes:
             obj_query = self.__session.query(c)

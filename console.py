@@ -12,6 +12,7 @@ from models.amenity import Amenity
 from models.review import Review
 import shlex
 
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -132,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[cls_name]()
         new_instance.__dict__.update(param_dict)
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 
@@ -206,20 +207,19 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
+        from_cls = None
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = shlex.split(args)[0]
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            from_cls = HBNBCommand.classes[args]
+        # ISSUE: DBStorage needs to returns a dict in the same format at FileStorage
+        # OR FileStorage needs to return a list of objects the same as DBStorage
+        for id, obj in storage.all(from_cls).items():
+            print_list.append('[{}] ({}) {}'.format(id.split('.')[0], id.split('.')[1], obj.to_dict()))
+        print('[{}]'.format('\n'.join(print_list)))
+        
 
     def help_all(self):
         """ Help information for the all command """

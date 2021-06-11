@@ -9,6 +9,8 @@ from models.city import City
 from models.state import State
 from models.user import User
 from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 class DBStorage:
     __engine = None
@@ -37,7 +39,7 @@ class DBStorage:
     
     def all(self, cls=None):
         """ Selects rows from mysql database """
-        classes = [cls] if cls is not None else [City, State, User, Place]
+        classes = [cls] if cls is not None else [City, State, User, Place, Amenity, Review]
         result_dict = {}
         for c in classes:
             obj_query = self.__session.query(c)

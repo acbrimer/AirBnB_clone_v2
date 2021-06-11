@@ -9,8 +9,6 @@ from models.city import City
 from models.state import State
 from sqlalchemy.dialects import mysql
 from sqlalchemy import exc as sa_exc
-from pprintpp import pprint
-import warnings
 
 class DBStorage:
     __engine = None
@@ -18,8 +16,7 @@ class DBStorage:
 
     def __init__(self):
         # Get current HBNB_ENV for default dev/test connection params
-        hbnb_env = 'dev'
-        # 'test' if os.getenv('HBNB_ENV') == 'test' else 'dev'
+        hbnb_env = 'test' if os.getenv('HBNB_ENV') == 'test' else 'dev'
         # Create a new engine to connect to mysql
         # Default: 'mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost/hbnb_dev_db'
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format( 

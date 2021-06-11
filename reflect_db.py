@@ -5,14 +5,14 @@ import sqlalchemy.schema as schema
 from sqlalchemy.schema import CreateTable
 from sqlalchemy.ext.declarative import declarative_base
 import os
-from pprintpp import pprint
+
 # from sqlalchemy.ext.automap import automap_base
 # from sqlalchemy.orm import Session
 
 """ sqlalchemy MySQL connection with env vars """ 
 engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format( 
     os.getenv('HBNB_MYSQL_USER', 'root'),
-    os.getenv('HBNB_MYSQL_PWD', 'holberton'),
+    os.getenv('HBNB_MYSQL_PWD', 'Bladyblird01'),
     os.getenv('HBNB_MYSQL_HOST', 'localhost'),
     os.getenv('HBNB_MYSQL_DB', 'hbtn_airbnb_reflect')
     ))

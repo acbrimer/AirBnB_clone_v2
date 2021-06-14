@@ -11,6 +11,7 @@ from models.user import User
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
+from sqlalchemy.exc import OperationalError
 
 class DBStorage:
     __engine = None
@@ -36,7 +37,6 @@ class DBStorage:
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(bind=self.__engine)
 
-    
     def all(self, cls=None):
         """ Selects rows from mysql database """
         classes = [cls] if cls is not None else [City, State, User, Place, Amenity, Review]
@@ -53,21 +53,26 @@ class DBStorage:
         """ Inserts a new row to table for obj """
         # Add obj -> 'INSERT INTO <table>(col1, col2, ...) VALUES(val1, val2, ...)'
         self.__session.add(obj)
-        self.save()
-        return obj.id
+        if self.save():
+            return obj.id
+        self.__session.rollback()
+        del(obj)
+        return None
 
     def save(self):
         """ Commits changes to MySQL """
         # Call commit() to run the SQL to insert object
-        self.__session.commit()
-        self.__session.flush()
-
+        try:
+            self.__session.commit()
+            # self.__session.flush()
+            return True
+        except Exception as err:
+            return False
     def delete(self, obj=None):
         self.__session.query(type(obj)).filter(type(obj).id==obj.id).delete()
         self.save()
 
     def reload(self):
-        # print(Base.metadata.tables)
         Base.metadata.create_all(bind=self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)

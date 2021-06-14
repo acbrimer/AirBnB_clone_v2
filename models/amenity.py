@@ -9,4 +9,4 @@ from sqlalchemy import Column, String, ForeignKey
 class Amenity(BaseModel, Base):
     __tablename__ = 'amenities'
     name = Column(String(128), nullable=False)
-    place_amenities = relationship('Place', secondary=place_amenity, backref='place')
+    place_amenities = relationship('Place', secondary=place_amenity, backref='Place.amenities')

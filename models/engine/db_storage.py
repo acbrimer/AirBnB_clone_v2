@@ -62,12 +62,8 @@ class DBStorage:
     def save(self):
         """ Commits changes to MySQL """
         # Call commit() to run the SQL to insert object
-        try:
-            self.__session.commit()
-            # self.__session.flush()
-            return True
-        except Exception as err:
-            return False
+        self.__session.commit()
+
     def delete(self, obj=None):
         self.__session.query(type(obj)).filter(type(obj).id==obj.id).delete()
         self.save()

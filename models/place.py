@@ -29,7 +29,7 @@ class Place(BaseModel, Base):
     amenities = relationship('Amenity',
                     viewonly=False,
                     secondary=place_amenity,
-                    backref='amenity'
+                    backref='Amenity.place_amenities'
                     )
     amentity_ids = []
 

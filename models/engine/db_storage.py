@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 from sqlalchemy.exc import OperationalError
 
+
 class DBStorage:
     __engine = None
     __session = None
@@ -21,8 +22,9 @@ class DBStorage:
         # Get current HBNB_ENV for default dev/test connection params
         hbnb_env = 'test' if os.getenv('HBNB_ENV') == 'test' else 'dev'
         # Create a new engine to connect to mysql
-        # Default: 'mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost/hbnb_dev_db'
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format( 
+        # Default:
+        # 'mysql+mysqldb://hbnb_dev:hbnb_dev_pwd@localhost/hbnb_dev_db'
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
             os.getenv('HBNB_MYSQL_USER', 'hbnb_{}'.format(hbnb_env)),
             os.getenv('HBNB_MYSQL_PWD', 'hbnb_{}_pwd'.format(hbnb_env)),
             os.getenv('HBNB_MYSQL_HOST', 'localhost'),
@@ -39,7 +41,14 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Selects rows from mysql database """
-        classes = [cls] if cls is not None else [City, State, User, Place, Amenity, Review]
+        classes = [
+            cls] if cls is not None else [
+            City,
+            State,
+            User,
+            Place,
+            Amenity,
+            Review]
         result_dict = {}
         for c in classes:
             obj_query = self.__session.query(c)
@@ -51,7 +60,8 @@ class DBStorage:
 
     def new(self, obj):
         """ Inserts a new row to table for obj """
-        # Add obj -> 'INSERT INTO <table>(col1, col2, ...) VALUES(val1, val2, ...)'
+        # Add obj -> 'INSERT INTO <table>(col1, col2, ...) VALUES(val1, val2,
+        # ...)'
         self.__session.add(obj)
         self.save()
         return obj
@@ -62,12 +72,14 @@ class DBStorage:
         self.__session.commit()
 
     def delete(self, obj=None):
-        self.__session.query(type(obj)).filter(type(obj).id==obj.id).delete()
+        self.__session.query(type(obj)).filter(type(obj).id == obj.id).delete()
         self.save()
 
     def reload(self):
         Base.metadata.create_all(bind=self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
         self.save()

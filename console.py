@@ -14,22 +14,23 @@ import shlex
 
 
 class HBNBCommand(cmd.Cmd):
+
     """ Contains the functionality for the HBNB console"""
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -123,7 +124,8 @@ class HBNBCommand(cmd.Cmd):
         # create new sub-list of args after <Class name>
         init_args = arg_list[1:]
         # get dict from <field="value"> params (empty for arg_list w/ <2 items)
-        param_dict = { a.split("=")[0]: a.split("=")[1].replace('_', ' ') for a in init_args }
+        param_dict = {a.split("=")[0]: a.split("=")[1].replace('_', ' ')
+                      for a in init_args}
         if not cls_name:
             print("** class name missing **")
             return
@@ -197,7 +199,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         storage.delete(storage.all()[key])
-        
+
     def help_destroy(self):
         """ Help information for the destroy command """
         print("Destroys an individual instance of a class")
@@ -213,12 +215,12 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             from_cls = HBNBCommand.classes[args]
-        # ISSUE: DBStorage needs to returns a dict in the same format at FileStorage
-        # OR FileStorage needs to return a list of objects the same as DBStorage
         for id, obj in storage.all(from_cls).items():
-            print_list.append('[{}] ({}) {}'.format(id.split('.')[0], id.split('.')[1], obj.to_dict()))
+            print_list.append(
+                '[{}] ({}) {}'.format(id.split('.')[0],
+                                      id.split('.')[1],
+                                      obj.to_dict()))
         print('[{}]'.format('\n'.join(print_list)))
-        
 
     def help_all(self):
         """ Help information for the all command """

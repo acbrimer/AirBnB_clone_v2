@@ -8,19 +8,33 @@ from datetime import datetime
 
 Base = declarative_base()
 
+
 class BaseModel:
+
     """A base class for all hbnb models"""
-    id = Column(String(60), nullable = False, primary_key = True)
-    created_at = Column(DateTime, nullable = False, default = datetime.utcnow())
-    updated_at = Column(DateTime, nullable = False, default = datetime.utcnow())
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow())
+    updated_at = Column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         kwargs['id'] = str(uuid.uuid4())
-        kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-            '%Y-%m-%dT%H:%M:%S.%f') if 'created_at' in kwargs else datetime.now()
-        kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-            '%Y-%m-%dT%H:%M:%S.%f') if 'updated_at' in kwargs else datetime.now()
+        if 'created_at' in kwargs:
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+        else:
+            kwargs['created_at'] = datetime.now()
+        if 'updated_at' in kwargs:
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+        else:
+            kwargs['updated_at'] = datetime.now()
         if '__class__' in kwargs:
             del kwargs['__class__']
         self.__dict__.update(kwargs)

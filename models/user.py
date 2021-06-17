@@ -7,22 +7,26 @@ from models.place import Place
 from models.review import Review
 from sqlalchemy.orm import relationship
 
+
 class User(BaseModel, Base):
+
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
-    email = Column(String(128), nullable = False)
-    password = Column(String(128), nullable = False)
-    first_name = Column(String(128), nullable = True)
-    last_name = Column(String(128), nullable = True)
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128), nullable=True)
+    last_name = Column(String(128), nullable=True)
     places = relationship('Place', back_populates='places')
     reviews = relationship('Review', back_populates='reviews')
 
     @property
     def places(self):
         from models import storage
-        return { key: val for key, val in storage.all(Place).items() if val['user_id'] == self.id }
-    
+        p = storage.all(Place).items()
+        return {key: val for key, val in p if val['user_id'] == self.id}
+
     @property
     def reviews(self):
         from models import storage
-        return { key: val for key, val in storage.all(Review).items() if val['user_id'] == self.id }
+        r = storage.all(Review).items()
+        return {key: val for key, val in r if val['user_id'] == self.id}

@@ -6,7 +6,9 @@ from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
+
 class State(BaseModel, Base):
+
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False, unique=True)
@@ -15,4 +17,5 @@ class State(BaseModel, Base):
     @property
     def cities(self):
         from models import storage
-        return { key: val for key, val in storage.all(City).items() if val['state_id'] == self.id }
+        c = storage.all(City).items()
+        return {key: val for key, val in c if val['state_id'] == self.id}

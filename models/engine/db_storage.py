@@ -54,7 +54,7 @@ class DBStorage:
         # Add obj -> 'INSERT INTO <table>(col1, col2, ...) VALUES(val1, val2, ...)'
         self.__session.add(obj)
         self.save()
-        return obj.id
+        print(obj.id)
 
     def save(self):
         """ Commits changes to MySQL """

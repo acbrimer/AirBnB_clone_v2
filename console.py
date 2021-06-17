@@ -38,7 +38,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -123,9 +122,6 @@ class HBNBCommand(cmd.Cmd):
         cls_name = arg_list[0]
         # create new sub-list of args after <Class name>
         init_args = arg_list[1:]
-        # since all table models have at least 1 required field, return if no fields set
-        if len(init_args) == 0:
-            return
         # get dict from <field="value"> params (empty for arg_list w/ <2 items)
         param_dict = { a.split("=")[0]: a.split("=")[1].replace('_', ' ') for a in init_args }
         if not cls_name:
@@ -136,9 +132,10 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[cls_name]()
         new_instance.__dict__.update(param_dict)
-        storage.new(new_instance)
-        print(new_instance.id)
-        new_instance.save()
+        new_instance = storage.new(new_instance)
+        if new_instance:
+            print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """

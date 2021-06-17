@@ -53,11 +53,8 @@ class DBStorage:
         """ Inserts a new row to table for obj """
         # Add obj -> 'INSERT INTO <table>(col1, col2, ...) VALUES(val1, val2, ...)'
         self.__session.add(obj)
-        if self.save():
-            return obj.id
-        self.__session.rollback()
-        del(obj)
-        return None
+        self.save()
+        return obj.id
 
     def save(self):
         """ Commits changes to MySQL """

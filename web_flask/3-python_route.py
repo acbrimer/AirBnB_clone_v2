@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Module for a simple flask app with 4 routes """
+""" Module for a simple flask app with single route """
 
 from flask import Flask
 

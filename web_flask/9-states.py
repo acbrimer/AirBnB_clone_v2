@@ -1,10 +1,8 @@
 #!/usr/bin/python3
-""" Module for a simple flask app with single route """
-
-# storage = __import__('Users/abrimerHome/Holberton/AirBnB_clone_v2/models').storage
-# State = __import__('Users/abrimerHome/Holberton/AirBnB_clone_v2/models/states.py').State
-from models import storage
+""" Console Module """
+from models.__init__ import storage
 from models.state import State
+
 from flask import Flask, render_template
 
 
@@ -14,7 +12,7 @@ app = Flask(__name__)
 @app.route('/states')
 def states_list():
     states = list(storage.all(State).values())
-    return render_template('9-states.html', states=states)
+    return render_template('9-states.html', states=states, req_type='list')
 
 
 @app.route('/states/<id>')
@@ -22,8 +20,9 @@ def state_get(id):
     states = storage.all(State)
     state = None
     if "State.{}".format(id) in states:
-        state = states["State.{}"]
-    return render_template('9-states.html', states=state)
+        state = states["State.{}".format(id)]
+    print(state)
+    return render_template('9-states.html', states=state, req_type='one')
 
 
 @app.teardown_appcontext

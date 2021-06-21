@@ -3,28 +3,23 @@
   <head>
     <title>HBNB</title>
   </head>
-  {% if type(states).__name__ == 'list' %}
+  {% if req_type == 'list' %}
   <body>
     <h1>States</h1>
     <ul>
       {% for state in states|sort(attribute='name') %}
       <li>
         {{ state.id }}: <b>{{ state.name }}</b>
-        <ul>
-          {% for city in state.cities|sort(attribute='name') %}
-          <li>{{ city.id }}: <b>{{ city.name }}</b></li>
-          {% endfor %}
-        </ul>
       </li>
       {% endfor %}
     </ul>
   </body>
-  {% elif type(states).__name__ == 'State' %}
+  {% elif req_type == 'one' %}
   <body>
     <h1>State: {{ states.name }}</h1>
     <h3>Cities:</h3>
     <ul>
-      {% for city in state.cities|sort(attribute='name') %}
+      {% for city in states.cities|sort(attribute='name') %}
       <li>{{ city.id }}: <b>{{ city.name }}</b></li>
       {% endfor %}
     </ul>

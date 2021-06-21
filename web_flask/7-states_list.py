@@ -16,8 +16,9 @@ def states_list():
 
 
 @app.teardown_appcontext
-def teardown():
+def teardown(exception):
     storage.close()
+
 
 if __name__ == "__main__":
     app.url_map.strict_slashes = False

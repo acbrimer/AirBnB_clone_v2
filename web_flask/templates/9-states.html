@@ -1,32 +1,37 @@
 <!DOCTYPE html>
-<HTML lang="en">
-    <HEAD>
-        <TITLE>HBNB</TITLE>
-    </HEAD>
-    <BODY>
-        {% if type(states).__name__ == 'list' %}
-            <H1>States</H1>
-            <UL>
-            {% for state in states|sort(attribute='name') %}
-                <LI>{{ state.id }}: <B>{{ state.name }}</B>
-                    <UL>
-                        {% for city in state.cities|sort(attribute='name') %}
-                            <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-                        {% endfor %}
-                    </UL>
-                </LI>
-            {% endfor %}
-            </UL>
-            {% elif type(states).__name__ == 'State' %}
-            <H1>State: {{ states.name }}</H1>
-            <H3>Cities:</H3>
-            <UL>
-                {% for city in state.cities|sort(attribute='name') %}
-                    <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-                {% endfor %}
-            </UL>
-            {% else %}
-            <H1>Not found!</H1>
-            {% endif %}
-    </BODY>
-</HTML>
+<html lang="en">
+  <head>
+    <title>HBNB</title>
+  </head>
+  {% if type(states).__name__ == 'list' %}
+  <body>
+    <h1>States</h1>
+    <ul>
+      {% for state in states|sort(attribute='name') %}
+      <li>
+        {{ state.id }}: <b>{{ state.name }}</b>
+        <ul>
+          {% for city in state.cities|sort(attribute='name') %}
+          <li>{{ city.id }}: <b>{{ city.name }}</b></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+  {% elif type(states).__name__ == 'State' %}
+  <body>
+    <h1>State: {{ states.name }}</h1>
+    <h3>Cities:</h3>
+    <ul>
+      {% for city in state.cities|sort(attribute='name') %}
+      <li>{{ city.id }}: <b>{{ city.name }}</b></li>
+      {% endfor %}
+    </ul>
+  </body>
+  {% else %}
+  <body>
+    <h1>Not found!</h1>
+  </body>
+  {% endif %}
+</html>

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Console Module """
+""" 9-states """
 from models.__init__ import storage
 from models.state import State
 
@@ -19,10 +19,11 @@ def states_list():
 def state_get(id):
     states = storage.all(State)
     state = None
+    req_type = ''
     if "State.{}".format(id) in states:
         state = states["State.{}".format(id)]
-    print(state)
-    return render_template('9-states.html', states=state, req_type='one')
+        req_type = 'one'
+    return render_template('9-states.html', states=state, req_type=req_type)
 
 
 @app.teardown_appcontext

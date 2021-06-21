@@ -1,9 +1,12 @@
 #!/usr/bin/python3
 """ Module for a simple flask app with single route """
 
+
 from flask import Flask
 
+
 app = Flask(__name__)
+
 
 @app.route('/')
 def hello():

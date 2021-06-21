@@ -19,5 +19,5 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             from models import storage
-            c = storage.all(City).items()
-            return {key: val for key, val in c if val['state_id'] == self.id}
+            c = storage.all(City).values()
+            return [obj for obj in c if obj.state_id == self.id]
